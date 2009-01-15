@@ -41,7 +41,7 @@ sub gmail_authenticate :Path("gmail/authenticate") {
     my $p = Parse::CPAN::Authors->new( $c->path_to("root/01mailrc.txt.gz")->stringify );
     for my $author ($p->authors) {
         $by_email{$author->email} = $author;
-        $by_name{$author->name}  = $author;
+        $by_name{$author->name} = $author if $author->name;
     }
 
     my(@friend_authors, %seen);

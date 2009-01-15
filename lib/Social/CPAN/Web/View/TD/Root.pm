@@ -81,6 +81,12 @@ template '/index' => sub {
             attr { action => $c->uri_for("/gmail"), method => 'post' };
             input { attr { type => "submit", value => " Sign in via Gmail " } };
         };
+
+        div {
+            class is "spacy";
+            h4 { class is "how"; "How does this work?" };
+            div { "This gets your contacts from Gmail contact list, searches PAUSE accounts matching with their email or name, and displays the recent activities by them." };
+        }
     } $c, $stash;
 };
 
