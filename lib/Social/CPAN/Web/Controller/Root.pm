@@ -48,7 +48,7 @@ sub gmail_authenticate :Path("gmail/authenticate") {
     for my $person (@{$contact->get_contact}) {
         my $author = $by_email{$person->{email}} || $by_name{$person->{name}};
         if ($author && !$seen{$author->pauseid}++) {
-            if ($author->email =~ /CENSORED|cpan.org|\s/) {
+            if ($author->email =~ /CENSORED|\s/) {
                 $author->email($person->{email});
             }
             push @friend_authors, $author;
