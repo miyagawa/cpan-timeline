@@ -1,0 +1,47 @@
+ul.inline {
+  margin: 0; padding: 0
+}
+
+ul.inline li {
+  display:inline;
+  border-left: 1px solid #888;
+  margin-left: 6px;
+  padding-left: 8px;
+}
+
+ul.inline li.first {
+  padding-left: 0;
+  margin-left: 0;
+  border: 0px;
+}
+
+a { text-decoration: none }
+
+.author-face {
+  float: left;
+  padding: 4px
+}
+
+.avatar-image {
+  vertical-align: middle
+}
+
+.activity {
+  margin-bottom: 0.5em
+}
+
+#recent-uploads {
+  float: left;
+  width: 60%;
+}
+
+#footer {
+  margin-top: 4em;
+  clear:both;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.warning {
+  color: #a00
+}
