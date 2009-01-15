@@ -164,10 +164,26 @@ sub link_with_face {
 }
 
 sub gravatar_url {
-    use Digest::MD5 qw(md5_hex);
     my($author, $size) = @_;
     my $hash = md5_hex($author->email);
-    "http://www.gravatar.com/avatar.php?gravatar_id=${hash}&rating=G&size=${size}&default=http%3A%2F%2Fst.pimg.net%2Ftucs%2Fimg%2Fwho.jpg";
+
+    my $default  = "http://st.pimg.net/tucs/img/who.jpg";
+    my $fallback = $author->email !~ /cpan\.org/
+        ? _gravatar( $author->email, $size, $default ) : $default;
+
+    return _gravatar( lc($author->pauseid) . '@cpan.org', $size, $fallback);
 }
+
+sub _gravatar {
+    my($email, $size, $default) = @_;
+
+    use Digest::MD5 qw(md5_hex);
+    use URI;
+    my $uri = URI->new("http://www.gravatar.com/avatar.php");
+    $uri->query_form( gravatar_id => md5_hex($email), rating => 'G', size => $size, default => $default );
+    return $uri;
+}
+
+
 
 1;
