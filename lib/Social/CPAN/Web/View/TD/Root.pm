@@ -29,7 +29,7 @@ create_wrapper wrap => sub {
         };
         body {
             div { attr { class => "container" };
-                  h1 { "CPAN Timeline" };
+                  h1 { class is "title"; a { href is $c->uri_for("/"); "CPAN Timeline" } };
                   $code->($c, $stash);
                   div {
                       my @stuff = (
@@ -96,16 +96,23 @@ template '/gmail_authenticate' => sub {
 
         div {
             id is "recent-uploads";
-            for my $entry ($stash->{feed}->entries) {
-                my $pauseid = ($entry->link =~ /\~(\w+)/)[0] or next;
-                my $author = $stash->{parser}->author(uc $pauseid) or next;
+            if ($stash->{feed}) {
+                for my $entry ($stash->{feed}->entries) {
+                    my $pauseid = ($entry->link =~ /\~(\w+)/)[0] or next;
+                    my $author = $stash->{parser}->author(uc $pauseid) or next;
+                    div {
+                        class is "activity";
+                        link_with_face($author, 24);
+                        a { href is "http://search.cpan.org/~$pauseid/"; $entry->author };
+                        outs " uploaded ";
+                        a { href is $entry->link; $entry->title };
+                        outs " on " . $entry->issued;
+                    };
+                }
+            } else {
                 div {
-                    class is "activity";
-                    link_with_face($author, 24);
-                    a { href is "http://search.cpan.org/~$pauseid/"; $entry->author };
-                    outs " uploaded ";
-                    a { href is $entry->link; $entry->title };
-                    outs " on " . $entry->issued;
+                    class is "error";
+                    "Parsing CPAN Recent feed failed.";
                 };
             }
         };
