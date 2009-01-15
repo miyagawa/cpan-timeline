@@ -4,7 +4,7 @@ use warnings;
 use Template::Declare::Tags;
 
 BEGIN {
-wrapper wrap => sub {
+create_wrapper wrap => sub {
     my($code, $c, $stash) = @_;
 
     html {
