@@ -31,34 +31,45 @@ create_wrapper wrap => sub {
             div { attr { class => "container" };
                   h1 { class is "title"; a { href is $c->uri_for("/"); "CPAN Timeline" } };
                   $code->($c, $stash);
-                  div {
-                      my @stuff = (
-                          [ 'Perl', "http://perl.org/" ],
-                          [ "search.cpan.org", "http://search.cpan.org/" ],
-                          [ "Parse::CPAN::Authors", "http://search.cpan.org/~lbrocard/Parse-CPAN-Authors/" ],
-                          [ "Google Contacts Data API", "http://code.google.com/apis/contacts/" ],
-                          [ "CPAN Recent Changes", "http://unknownplace.org/cpanrecent/" ],
-                          [ "Gravatar", "http://www.gravatar.com/" ],
-                      );
-                      id is "footer";
-                      outs "Built by Tatsuhiko Miyagawa using the following stuff.";
-                      a { href is "http://github.com/miyagawa/cpan-timeline";
-                          "Fork me on github" };
-                      ul {
-                          class is "inline";
-                          my $i = 0;
-                          for my $stuff (@stuff) {
-                              li {
-                                  class is "first" if $i++ == 0;
-                                  a { target is "_blank"; href is $stuff->[1]; $stuff->[0] };
-                              };
-                          }
-                      }
-                  };
+                  footer();
               };
         };
     };
 };
+}
+
+sub footer {
+    div {
+        my @stuff = (
+            [ 'Perl', "http://perl.org/" ],
+            [ "search.cpan.org", "http://search.cpan.org/" ],
+            [ "Parse::CPAN::Authors", "http://search.cpan.org/~lbrocard/Parse-CPAN-Authors/" ],
+            [ "Google Contacts Data API", "http://code.google.com/apis/contacts/" ],
+            [ "CPAN Recent Changes", "http://unknownplace.org/cpanrecent/" ],
+            [ "Gravatar", "http://www.gravatar.com/" ],
+        );
+        id is "footer";
+        outs "Built by Tatsuhiko Miyagawa using the following stuff.";
+        ul {
+            class is "inline";
+            my $i = 0;
+            for my $stuff (@stuff) {
+                li {
+                    class is "first" if $i++ == 0;
+                    a { target is "_blank"; href is $stuff->[1]; $stuff->[0] };
+                };
+            }
+        }
+    };
+}
+
+sub forkme {
+    a { href is "http://github.com/miyagawa/cpan-timeline";
+        img {
+            style is "position:absolute; top:0; right:0; border:0";
+            src is "http://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png";
+            alt is "Fork me on GitHub";
+        } };
 }
 
 sub dumper {
@@ -85,8 +96,10 @@ template '/index' => sub {
         div {
             class is "spacy";
             h4 { class is "how"; "How does this work?" };
-            div { "This gets your contacts from Gmail contact list, searches PAUSE accounts matching with their email or name, and displays the recent activities by them. Google Social Graph support? Yes I plan to :)" };
-        }
+            div { "This gets your contacts using Google Contacts API (Gmail and Google Talk), searches PAUSE accounts matching with their email or name, and displays the recent activities by them. Google Social Graph support? Yes I plan to :)" };
+        };
+
+        forkme();
     } $c, $stash;
 };
 
