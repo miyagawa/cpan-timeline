@@ -89,7 +89,7 @@ sub get_contact {
         my %elems;
         $elems{ $_ } = $entry->findvalue("./*[local-name()='" . $_ . "']") for qw(id updated title);
         $elems{"name"}  = $elems{"title"};
-        $elems{"email"} = $entry->getElementsByTagName('gd:email')->[0]->getAttribute("address");
+        $elems{"email"} = eval { $entry->getElementsByTagName('gd:email')->[0]->getAttribute("address") };
         push @contacts, \%elems;
     }
     return $self->{contacts} = \@contacts;

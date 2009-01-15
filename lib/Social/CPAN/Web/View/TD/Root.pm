@@ -85,7 +85,7 @@ template '/index' => sub {
         div {
             class is "spacy";
             h4 { class is "how"; "How does this work?" };
-            div { "This gets your contacts from Gmail contact list, searches PAUSE accounts matching with their email or name, and displays the recent activities by them." };
+            div { "This gets your contacts from Gmail contact list, searches PAUSE accounts matching with their email or name, and displays the recent activities by them. Google Social Graph support? Yes I plan to :)" };
         }
     } $c, $stash;
 };
