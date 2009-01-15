@@ -41,7 +41,7 @@ create_wrapper wrap => sub {
                           [ "Gravatar", "http://www.gravatar.com/" ],
                       );
                       id is "footer";
-                      outs "2009- Tatsuhiko Miyagawa, built with the following software.";
+                      outs "Built by Tatsuhiko Miyagawa using the following stuff.";
                       a { href is "http://github.com/miyagawa/cpan-timeline";
                           "Fork me on github" };
                       ul {
