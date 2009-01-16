@@ -42,9 +42,11 @@ sub footer {
     div {
         my @stuff = (
             [ 'Perl', "http://perl.org/" ],
+            [ 'Catalyst', 'http://dev.catalyst.perl.org/' ],
             [ "search.cpan.org", "http://search.cpan.org/" ],
             [ "Parse::CPAN::Authors", "http://search.cpan.org/~lbrocard/Parse-CPAN-Authors/" ],
             [ "Google Contacts Data API", "http://code.google.com/apis/contacts/" ],
+            [ "Google Social Graph API", "http://code.google.com/apis/socialgraph/" ],
             [ "CPAN Recent Changes", "http://unknownplace.org/cpanrecent/" ],
             [ "Gravatar", "http://www.gravatar.com/" ],
         );
@@ -93,24 +95,33 @@ template '/index' => sub {
             input { attr { type => "submit", value => " Sign in via Gmail " } };
         };
 
+        form {
+            attr { class is "spacy"; action => $c->uri_for('/socialgraph'), method => 'get' };
+            label { attr { for => 'uri' }; "URL:" };
+            input { attr { type => 'text', size => 24, name => 'uri' } };
+            span { class is "gray"; " (e.g. twitter.com/miyagawa)" };
+        };
+
         div {
             class is "spacy";
             h4 { class is "how"; "How does this work?" };
-            div { "This gets your contacts using Google Contacts API (Gmail and Google Talk), searches PAUSE accounts matching with their email or name, and displays the recent activities by them. Google Social Graph support? Yes I plan to :)" };
+            div { "This gets your contacts using Google Contacts API (Gmail and Google Talk) or Social Graph API, searches PAUSE accounts matching with their email or name (in Social Graph search we assume their account ID matches with PAUSE one, which should not be always true), and displays the recent activities by them." };
         };
 
         forkme();
     } $c, $stash;
 };
 
-template '/gmail_authenticate' => sub {
+template '/timeline' => sub {
     my($self, $c, $stash) = @_;
 
     wrap {
         div {
             class is "result";
             h3 { "You have " . scalar @{$stash->{friends}} . " friends on CPAN." };
-            h4 { class is "warning"; "Don't share this URL. It is not bookmarkable (yet)." };
+            if ($c->request->param('token')) {
+                h4 { class is "warning"; "Don't share this URL. It is not bookmarkable (yet)." };
+            }
         };
 
         div {
